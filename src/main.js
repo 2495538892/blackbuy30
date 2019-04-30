@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+//导入饿了吗UI
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
+
+
 // 引入头部尾部的全局样式
 import baseCSS from './assets/statics/site/css/style.css'
 
