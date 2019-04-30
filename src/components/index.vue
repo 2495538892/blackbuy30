@@ -110,14 +110,14 @@
           <div class="left-705">
             <el-carousel height="341px">
               <el-carousel-item v-for="item in sliderlist" :key="item.id">
-                <img :src="item.img_url" alt="" class="slider-img">
+                <img :src="item.img_url" alt class="slider-img">
               </el-carousel-item>
             </el-carousel>
           </div>
           <!--/幻灯片-->
           <div class="left-220">
             <ul class="side-img-list">
-              <li v-for="(value,index) in toplist">
+              <li v-for="(value,index) in toplist" :key="index">
                 <div class="img-box">
                   <label>{{index+1}}</label>
                   <img :src="value.img_url">
@@ -137,7 +137,11 @@
       <div class="main-tit">
         <h2>{{value.catetitle}}</h2>
         <p>
-          <a href="/goods/43.html" v-for="(item,i) in value.level2catelist" :key="i">{{item.subcatetitle}}</a>
+          <a
+            href="/goods/43.html"
+            v-for="(item,i) in value.level2catelist"
+            :key="i"
+          >{{item.subcatetitle}}</a>
           <a href="/goods/40.html">
             更多
             <i>+</i>
@@ -148,11 +152,10 @@
         <div class="wrap-box">
           <ul class="img-list">
             <li v-for="(item2,i) in value.datas" :key="i">
-              <a href="#/site/goodsinfo/87" class>
+              <!-- <a href="#/site/goodsinfo/87" class> -->
+              <router-link to="/detail">
                 <div class="img-box">
-                  <img
-                    :src="item2.img_url"
-                  >
+                  <img :src="item2.img_url">
                 </div>
                 <div class="info">
                   <h3>{{item2.artTitle}}</h3>
@@ -167,14 +170,13 @@
                     </span>
                   </p>
                 </div>
-              </a>
+              </router-link>
+              <!-- </a> -->
             </li>
-           
           </ul>
         </div>
       </div>
     </div>
-  
   </div>
 </template>
 
@@ -189,7 +191,7 @@ export default {
       sliderlist: "",
       toplist: "",
       //商品列表数据
-      shopmessage:''
+      shopmessage: ""
     };
   },
 
@@ -203,11 +205,13 @@ export default {
         this.toplist = response.data.message.toplist;
         // console.log(this.sliderlist)
       });
-     
-     axios.get('http://111.230.232.110:8899/site/goods/getgoodsgroup').then(response=>{
-         console.log(response)
-         this.shopmessage=response.data.message
-     })
+
+    axios
+      .get("http://111.230.232.110:8899/site/goods/getgoodsgroup")
+      .then(response => {
+        console.log(response);
+        this.shopmessage = response.data.message;
+      });
   },
   name: "index",
   filters: {
@@ -221,9 +225,9 @@ export default {
 </script>
 
 <style>
-.slider-img{
-    display: block;
-    height:100%;
-    width:100%;
+.slider-img {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 </style>

@@ -13,6 +13,8 @@ import baseCSS from './assets/statics/site/css/style.css'
 //导入首页组件
 import index from './components/index.vue'
 
+//导入详情组件
+import detail from './components/detail.vue'
 
 //导入路由
 import VueRouter from 'vue-router'
@@ -23,7 +25,10 @@ Vue.use(VueRouter)
 
 const routes= [
   //首页规则
-  {path:'/index',component:index}
+  {path:'/index',component:index},
+
+  // 详情规则在
+  {path:'/detail',component:detail}
 ]
 
 //创建路由对象
