@@ -16,6 +16,9 @@ import index from './components/index.vue'
 //导入详情组件
 import detail from './components/detail.vue'
 
+//导入评论组件
+import comment from './components/comment.vue'
+
 //导入路由
 import VueRouter from 'vue-router'
 
@@ -28,7 +31,10 @@ const routes= [
   {path:'/index',component:index},
 
   // 详情规则在
-  {path:'/detail',component:detail}
+  // 因为详情需要携带id所以使用'动态路由'
+  {path:'/detail/:id',component:detail},
+
+  {path:'/comment',component:comment}
 ]
 
 //创建路由对象
