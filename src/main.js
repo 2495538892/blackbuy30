@@ -1,25 +1,25 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-//导入饿了吗UI
+//1.导入饿了吗UI
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
 
-// 引入头部尾部的全局样式
+// 2.引入头部尾部的全局样式
 import baseCSS from './assets/statics/site/css/style.css'
 
-//导入首页组件
+//3.导入首页组件
 import index from './components/index.vue'
 
-//导入详情组件
+//4.导入详情组件
 import detail from './components/detail.vue'
 
-//导入路由
+//5.导入路由
 import VueRouter from 'vue-router'
 
-// 导入会员中组件
+// 6.导入会员中组件
 import usercomment from './components/usercomment.vue'
 
 import userIndex from './components/userIndex.vue'
@@ -29,15 +29,20 @@ import userOrder from './components/userOrder.vue'
 import userDetail from './components/userDetail.vue'
 
 
-// 抽取axios
+// 7.抽取axios
 import axios from 'axios';
 
 // 因为每一个组件都可以看做是Vue实例,所以把axios放在原型里面这样每一个Vue实例都可以访问,$是为了语法规范,原型添加的属性加个$
 Vue.prototype.$axios=axios
 
-//抽取基地址
+//8.抽取基地址
 axios.defaults.baseURL = 'http://111.230.232.110:8899';
 
+// 9.抽取全局过滤器
+import moment from 'moment'
+Vue.filter('formatTime',(value)=>{
+  return moment(value).format("YYYY年MM月DD日")
+})
 
 Vue.use(VueRouter)
 

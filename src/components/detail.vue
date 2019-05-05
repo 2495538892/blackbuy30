@@ -213,7 +213,7 @@
 </template>
 
 <script>
-import monent from "moment";
+// import monent from "moment";
 
 
 export default {
@@ -250,11 +250,11 @@ export default {
     //页面已加载就调用分页评论的方法
     this.getComment();
   },
-  filters: {
-    formatTime: function(value) {
-      return monent(value).format("YYYY年MM月DD日");
-    }
-  },
+  // filters: {
+  //   formatTime: function(value) {
+  //     return monent(value).format("YYYY年MM月DD日");
+  //   }
+  // },
   methods: {
     postComment: function() {
       this.$axios
