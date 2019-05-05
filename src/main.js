@@ -59,13 +59,13 @@ const routes= [
   // 因为详情需要携带id所以使用'动态路由'
   {path:'/detail/:id',component:detail},
 
-  //会员中心的路由规则
+  //会员中心的路由规则,注意:嵌套的路由路径里面不用是否'/' ; 嵌套路由的 link to的路径要写完成的路径
   {path:'/usercomment',component:usercomment,
   children:[
-    { path: '/', redirect: '/userIndex' },
-    {path:'/userIndex',component:userIndex},
-    {path:'/userOrder',component:userOrder},
-    {path:'/userDetail',component:userDetail},
+    { path: '/', redirect: 'userIndex' },
+    {path:'userIndex',component:userIndex},// /usercomment/userIndex
+    {path:'userOrder',component:userOrder},
+    {path:'userDetail',component:userDetail},
   ]
 },
 

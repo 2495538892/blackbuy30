@@ -34,13 +34,14 @@
                           <a href="#/site/member/orderlist" class>
                             <i class="iconfont icon-arrow-right"></i>交易订单
                           </a>
-                          <router-link to="/userIndex">
+                          <!-- 嵌套路由的 link to的路径要写完成的路径 -->
+                          <router-link to="/usercomment/userIndex">
                             <i class="iconfont icon-arrow-right"></i>个人中心
                           </router-link>
-                          <router-link to="/userDetail">
+                          <router-link to="/usercomment/userDetail">
                             <i class="iconfont icon-arrow-right"></i>订单详情
                           </router-link>
-                          <router-link to="/userOrder">
+                          <router-link to="/usercomment/userOrder">
                             <i class="iconfont icon-arrow-right"></i>订单列表
                           </router-link>
                         </p>
@@ -79,7 +80,7 @@
               </div>
             </div>
             <div class="right-auto">
-              <router-view></router-view>
+             <router-view></router-view>
             </div>
           </div>
         </div>

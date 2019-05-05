@@ -18,7 +18,7 @@
               <strong>|</strong>
             </span>
             <span>
-              <router-link to="./usercomment">会员中心</router-link>
+              <router-link to="/usercomment">会员中心</router-link>
               <strong>|</strong>
               <a>退出</a>
               <strong>|</strong>
