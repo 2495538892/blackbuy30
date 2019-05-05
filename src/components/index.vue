@@ -182,7 +182,7 @@
 
 
 <script>
-// import monent from "moment";
+import monent from "moment";
 export default {
   data: function() {
     return {
@@ -214,13 +214,13 @@ export default {
       });
   },
   name: "index",
-  // filters: {
-  //   formattime: function(value) {
-  //     console.log(value);
-  //     // return value.split('T')[0]
-  //     return monent(value).format("YYYY年MM月DD日");
-  //   }
-  // }
+  filters: {
+    formattime: function(value) {
+      console.log(value);
+      // return value.split('T')[0]
+      return monent(value).format("YYYY年MM月DD日");
+    }
+  }
 };
 </script>
 

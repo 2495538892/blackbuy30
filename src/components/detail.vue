@@ -14,7 +14,12 @@
           <div class="left-925">
             <div class="goods-box clearfix">
               <div class="pic-box">
-                <img :src="imglist[0].thumb_path" alt>
+                <el-carousel height="330px">
+                  <el-carousel-item v-for="(item,index) in imglist
+                  " :key="index">
+                    <img :src="item.thumb_path" alt>
+                  </el-carousel-item>
+                </el-carousel>
               </div>
               <div class="goods-spec">
                 <h1>{{goodsinfo.title}}</h1>
@@ -42,35 +47,12 @@
                     <dt>购买数量</dt>
                     <dd>
                       <div class="stock-box">
-                        <div class="el-input-number el-input-number--small">
-                          <span role="button" class="el-input-number__decrease is-disabled">
-                            <i class="el-icon-minus"></i>
-                          </span>
-                          <span role="button" class="el-input-number__increase">
-                            <i class="el-icon-plus"></i>
-                          </span>
-                          <div class="el-input el-input--small">
-                            <!---->
-                            <input
-                              autocomplete="off"
-                              size="small"
-                              type="text"
-                              rows="2"
-                              max="60"
-                              min="1"
-                              validateevent="true"
-                              class="el-input__inner"
-                              role="spinbutton"
-                              aria-valuemax="60"
-                              aria-valuemin="1"
-                              aria-valuenow="1"
-                              aria-disabled="false"
-                            >
-                            <!---->
-                            <!---->
-                            <!---->
-                          </div>
-                        </div>
+                        <el-input-number
+                          v-model="num"
+                          :min="1"
+                          :max="goodsinfo.stock_quantity"
+                          label="描述文字"
+                        ></el-input-number>
                       </div>
                       <span class="stock-txt">
                         库存
@@ -215,7 +197,6 @@
 <script>
 // import monent from "moment";
 
-
 export default {
   data: function() {
     return {
@@ -232,21 +213,22 @@ export default {
       //评论的总页数
       totalcount: 0,
       //评论条数(数组)
-      commentMessage: ""
+      commentMessage: "",
+
+      // 计数器的字段
+      num:1
     };
   },
   name: "detail",
   created() {
     const id = this.$route.params.id;
     // 使用抽取出来的axios
-    this.$axios
-      .get("/site/goods/getgoodsinfo/" + id)
-      .then(response => {
-        console.log(response);
-        this.hotgoodslist = response.data.message.hotgoodslist;
-        this.goodsinfo = response.data.message.goodsinfo;
-        this.imglist = response.data.message.imglist;
-      });
+    this.$axios.get("/site/goods/getgoodsinfo/" + id).then(response => {
+      console.log(response);
+      this.hotgoodslist = response.data.message.hotgoodslist;
+      this.goodsinfo = response.data.message.goodsinfo;
+      this.imglist = response.data.message.imglist;
+    });
     //页面已加载就调用分页评论的方法
     this.getComment();
   },
@@ -258,12 +240,9 @@ export default {
   methods: {
     postComment: function() {
       this.$axios
-        .post(
-          `/site/validate/comment/post/goods/${
-            this.$route.params.id
-          }`,
-          { commenttxt: this.comment }
-        )
+        .post(`/site/validate/comment/post/goods/${this.$route.params.id}`, {
+          commenttxt: this.comment
+        })
         .then(response => {
           // console.log(response);
           if (this.comment == "") {
@@ -283,14 +262,14 @@ export default {
     getComment: function() {
       this.$axios
         .get(
-          `/site/comment/getbypage/goods/${
-            this.$route.params.id
-          }?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}`
+          `/site/comment/getbypage/goods/${this.$route.params.id}?pageIndex=${
+            this.pageIndex
+          }&pageSize=${this.pageSize}`
         )
         .then(response => {
-          console.log(response);
+          // console.log(response);
           this.totalcount = response.data.totalcount;
-          console.log(this.totalcount)
+          console.log(this.totalcount);
           this.commentMessage = response.data.message;
         });
     },
@@ -310,6 +289,9 @@ export default {
 </script>
 
 <style>
+.pic-box {
+  width: 395px;
+}
 .pic-box img {
   width: 300px;
 }
