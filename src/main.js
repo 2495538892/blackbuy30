@@ -74,8 +74,10 @@ const routes= [
 //创建路由对象
 const router = new VueRouter({
   routes
+
 })
-Vue.config.productionTip = false
+
+Vue.config.productionTip = false 
 
 new Vue({
   render: h => h(App),
