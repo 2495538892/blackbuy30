@@ -57,6 +57,7 @@ const routes= [
   //会员中心的路由规则
   {path:'/usercomment',component:usercomment,
   children:[
+    { path: '/', redirect: '/userIndex' },
     {path:'/userIndex',component:userIndex},
     {path:'/userOrder',component:userOrder},
     {path:'/userDetail',component:userDetail},
