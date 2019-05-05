@@ -214,7 +214,8 @@
 
 <script>
 import monent from "moment";
-import axios from "axios";
+
+
 export default {
   data: function() {
     return {
@@ -236,10 +237,10 @@ export default {
   },
   name: "detail",
   created() {
-    // console.log(this.$route)
     const id = this.$route.params.id;
-    axios
-      .get("http://111.230.232.110:8899/site/goods/getgoodsinfo/" + id)
+    // 使用抽取出来的axios
+    this.$axios
+      .get("/site/goods/getgoodsinfo/" + id)
       .then(response => {
         console.log(response);
         this.hotgoodslist = response.data.message.hotgoodslist;
@@ -256,9 +257,9 @@ export default {
   },
   methods: {
     postComment: function() {
-      axios
+      this.$axios
         .post(
-          `http://111.230.232.110:8899/site/validate/comment/post/goods/${
+          `/site/validate/comment/post/goods/${
             this.$route.params.id
           }`,
           { commenttxt: this.comment }
@@ -280,9 +281,9 @@ export default {
     },
     // 获取分页评论
     getComment: function() {
-      axios
+      this.$axios
         .get(
-          `http://111.230.232.110:8899/site/comment/getbypage/goods/${
+          `/site/comment/getbypage/goods/${
             this.$route.params.id
           }?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}`
         )

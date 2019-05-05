@@ -182,7 +182,6 @@
 
 
 <script>
-import axios from "axios";
 import monent from "moment";
 export default {
   data: function() {
@@ -196,8 +195,9 @@ export default {
   },
 
   created() {
-    axios
-      .get("http://111.230.232.110:8899/site/goods/gettopdata/goods")
+    //使用抽取出来的axios
+    this.$axios
+      .get("/site/goods/gettopdata/goods")
       .then(response => {
         // console.log(response);
         this.catelist = response.data.message.catelist;
@@ -206,8 +206,8 @@ export default {
         // console.log(this.sliderlist)
       });
 
-    axios
-      .get("http://111.230.232.110:8899/site/goods/getgoodsgroup")
+    this.$axios
+      .get("/site/goods/getgoodsgroup")
       .then(response => {
         console.log(response);
         this.shopmessage = response.data.message;

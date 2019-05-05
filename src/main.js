@@ -22,11 +22,31 @@ import VueRouter from 'vue-router'
 // 导入会员中组件
 import usercomment from './components/usercomment.vue'
 
+import userIndex from './components/userIndex.vue'
+
+import userOrder from './components/userOrder.vue'
+
+import userDetail from './components/userDetail.vue'
+
+
+// 抽取axios
+import axios from 'axios';
+
+// 因为每一个组件都可以看做是Vue实例,所以把axios放在原型里面这样每一个Vue实例都可以访问,$是为了语法规范,原型添加的属性加个$
+Vue.prototype.$axios=axios
+
+//抽取基地址
+axios.defaults.baseURL = 'http://111.230.232.110:8899';
+
+
 Vue.use(VueRouter)
 
 //写路由规则
 
 const routes= [
+  // 重定向(就是默认index页)
+  { path: '/', redirect: '/index' },
+  
   //首页规则
   {path:'/index',component:index},
 
@@ -35,7 +55,13 @@ const routes= [
   {path:'/detail/:id',component:detail},
 
   //会员中心的路由规则
-  {path:'/usercomment',component:usercomment},
+  {path:'/usercomment',component:usercomment,
+  children:[
+    {path:'/userIndex',component:userIndex},
+    {path:'/userOrder',component:userOrder},
+    {path:'/userDetail',component:userDetail},
+  ]
+},
 
 ]
 
