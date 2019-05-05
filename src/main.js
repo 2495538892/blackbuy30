@@ -16,11 +16,11 @@ import index from './components/index.vue'
 //导入详情组件
 import detail from './components/detail.vue'
 
-//导入评论组件
-import comment from './components/comment.vue'
-
 //导入路由
 import VueRouter from 'vue-router'
+
+// 导入会员中组件
+import usercomment from './components/usercomment.vue'
 
 Vue.use(VueRouter)
 
@@ -34,7 +34,9 @@ const routes= [
   // 因为详情需要携带id所以使用'动态路由'
   {path:'/detail/:id',component:detail},
 
-  {path:'/comment',component:comment}
+  //会员中心的路由规则
+  {path:'/usercomment',component:usercomment},
+
 ]
 
 //创建路由对象

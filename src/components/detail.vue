@@ -14,7 +14,7 @@
           <div class="left-925">
             <div class="goods-box clearfix">
               <div class="pic-box">
-                <img :src="imglist[0].thumb_path" alt="">
+                <img :src="imglist[0].thumb_path" alt>
               </div>
               <div class="goods-spec">
                 <h1>{{goodsinfo.title}}</h1>
@@ -97,16 +97,93 @@
               >
                 <ul>
                   <li>
-                    
-                    <a href="javascript:;" class="selected">商品介绍</a>
+                    <a href="javascript:;" :class="{selected:index==1}" @click="index=1">商品介绍</a>
                   </li>
                   <li>
-                    <router-link to="/comment">商品评论</router-link>
+                    <a href="javascript:;" :class="{selected:index==2}" @click="index=2">商品评论</a>
                   </li>
                 </ul>
               </div>
-              <div class="tab-content entry" style="display: block;" v-html="goodsinfo.content"></div>
-              <router-view></router-view>
+              <div
+                class="tab-content entry"
+                style="display: block;"
+                v-html="goodsinfo.content"
+                v-show="index==1"
+              ></div>
+
+              <div class="tab-content" style="display: block;" v-show="index==2">
+                <div class="comment-box">
+                  <div id="commentForm" name="commentForm" class="form-box">
+                    <div class="avatar-box">
+                      <i class="iconfont icon-user-full"></i>
+                    </div>
+                    <div class="conn-box">
+                      <div class="editor">
+                        <textarea
+                          id="txtContent"
+                          name="txtContent"
+                          sucmsg=" "
+                          data-type="*10-1000"
+                          nullmsg="请填写评论内容！"
+                          v-model="comment"
+                        ></textarea>
+                        <span class="Validform_checktip"></span>
+                      </div>
+                      <div class="subcon">
+                        <input
+                          id="btnSubmit"
+                          name="submit"
+                          type="submit"
+                          value="提交评论"
+                          class="submit"
+                          @click="postComment"
+                        >
+                        <span class="Validform_checktip"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <ul id="commentList" class="list-box">
+                    <p
+                      style="margin: 5px 0px 15px 69px; line-height: 42px; text-align: center; border: 1px solid rgb(247, 247, 247);"
+                    >暂无评论，快来抢沙发吧！</p>
+                    <li v-for="(value,index) in commentMessage" :key="index">
+                      <div class="avatar-box">
+                        <i class="iconfont icon-user-full"></i>
+                      </div>
+                      <div class="inner-box">
+                        <div class="info">
+                          <span>{{value.user_name}}</span>
+                          <span>{{value.reply_time|formatTime}}</span>
+                        </div>
+                        <p>{{value.content}}</p>
+                      </div>
+                    </li>
+                  </ul>
+                  <div class="page-box" style="margin: 5px 0px 0px 62px;">
+                    <div id="pagination" class="digg">
+                      <!-- <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="pageIndex"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total='totalcount'
+                      ></el-pagination>-->
+                      <!--分页插件 -->
+                      <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="pageIndex"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="totalcount"
+                      ></el-pagination>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="left-220">
@@ -142,8 +219,19 @@ export default {
   data: function() {
     return {
       hotgoodslist: "",
-      goodsinfo:'',
-      imglist:''
+      goodsinfo: "",
+      imglist: "",
+      index: 1,
+      comment: "",
+
+      // 获取分页评论内容
+      pageIndex: 1,
+      // 每页显示的条数
+      pageSize: 10,
+      //评论的总页数
+      totalcount: 0,
+      //评论条数(数组)
+      commentMessage: ""
     };
   },
   name: "detail",
@@ -155,26 +243,79 @@ export default {
       .then(response => {
         console.log(response);
         this.hotgoodslist = response.data.message.hotgoodslist;
-        this.goodsinfo=response.data.message.goodsinfo;
-        this.imglist=response.data.message.imglist;
+        this.goodsinfo = response.data.message.goodsinfo;
+        this.imglist = response.data.message.imglist;
       });
+    //页面已加载就调用分页评论的方法
+    this.getComment();
   },
   filters: {
     formatTime: function(value) {
       return monent(value).format("YYYY年MM月DD日");
+    }
+  },
+  methods: {
+    postComment: function() {
+      axios
+        .post(
+          `http://111.230.232.110:8899/site/validate/comment/post/goods/${
+            this.$route.params.id
+          }`,
+          { commenttxt: this.comment }
+        )
+        .then(response => {
+          // console.log(response);
+          if (this.comment == "") {
+            alert("请输入评论");
+            return;
+          }
+          if (response.data.message === "评论成功") {
+            this.$message({
+              message: "评论成功",
+              type: "success"
+            });
+            this.comment = "";
+          }
+        });
+    },
+    // 获取分页评论
+    getComment: function() {
+      axios
+        .get(
+          `http://111.230.232.110:8899/site/comment/getbypage/goods/${
+            this.$route.params.id
+          }?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}`
+        )
+        .then(response => {
+          console.log(response);
+          this.totalcount = response.data.totalcount;
+          console.log(this.totalcount)
+          this.commentMessage = response.data.message;
+        });
+    },
+    // 饿了吗提供的页码事件:页容量改变
+    handleSizeChange: function(val) {
+      this.pageSize = val;
+      // 重新调用数据
+      this.getComment();
+    },
+    // 饿了吗提供的页码事件:当前页改变
+    handleCurrentChange: function(val) {
+      this.pageIndex = val;
+      this.getComment();
     }
   }
 };
 </script>
 
 <style>
-.pic-box img{
+.pic-box img {
   width: 300px;
 }
-.ql-align-center img{
+.ql-align-center img {
   display: block;
 }
-p img{
+p img {
   display: block;
 }
 </style>

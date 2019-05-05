@@ -18,7 +18,8 @@
               <strong>|</strong>
             </span>
             <span>
-              <a href class>会员中心</a>
+              <router-link to="./usercomment">会员中心</router-link>
+
               <strong>|</strong>
               <a>退出</a>
               <strong>|</strong>
@@ -88,7 +89,7 @@
         </div>
       </div>
     </div>
-      <router-view></router-view>
+    <router-view></router-view>
     <!-- 尾部 -->
     <div class="footer">
       <div class="section">
