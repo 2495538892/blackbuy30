@@ -175,12 +175,14 @@
                 <ul class="side-img-list">
                   <li v-for="(value,index) in hotgoodslist" :key="index">
                     <div class="img-box">
-                      <a href="#/site/goodsinfo/90" class>
+                      <!-- <a href="#/site/goodsinfo/90" class> -->
+                      <router-link :to="'/detail/'+value.id">
                         <img :src="value.img_url">
-                      </a>
+                      </router-link>
+                      <!-- </a> -->
                     </div>
                     <div class="txt-box">
-                      <a href="#/site/goodsinfo/90" class>{{value.title}}</a>
+                      <router-link :to="'/detail/'+value.id">{{value.title}}</router-link>
                       <span>{{value.add_time| formatTime}}</span>
                     </div>
                   </li>
@@ -216,7 +218,7 @@ export default {
       commentMessage: "",
 
       // 计数器的字段
-      num:1
+      num: 1
     };
   },
   name: "detail",
@@ -284,6 +286,20 @@ export default {
       this.pageIndex = val;
       this.getComment();
     }
+  },
+  // 点击详情右侧推荐商品显示到详情页面; 用到侦听器(具体看文档)
+  watch: {
+    // 点击右侧商品获取详情
+    "$route.params.id"(nw) {
+      this.$axios.get("/site/goods/getgoodsinfo/" + nw).then(response => {
+        console.log(response);
+        this.hotgoodslist = response.data.message.hotgoodslist;
+        this.goodsinfo = response.data.message.goodsinfo;
+        this.imglist = response.data.message.imglist;
+      });
+      // 点击右侧商品获取评论
+      this.getComment();
+    }
   }
 };
 </script>
@@ -291,6 +307,7 @@ export default {
 <style>
 .pic-box {
   width: 395px;
+  text-align: center;
 }
 .pic-box img {
   width: 300px;
